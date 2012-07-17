@@ -28,7 +28,7 @@ function curlstats ()
 
 
 
-urls=(http://i.imgur.com/000{a..z}{a..z}.jpg);
+urls=(http://i.imgur.com/00{a..z}{a..z}{a..z}.jpg);
 
 
 num_urls="${#urls[@]}"
@@ -36,10 +36,21 @@ num_urls="${#urls[@]}"
 echo "testing ${num_urls} urls..."
 
 
-
+count=0;
 for url in "${urls[@]}"; do
+
+    count=$((count+1));
+    remainder=$((count % 50));
+
+    if [[ $remainder -eq 0 ]]; then
+        echo "sleeping for five seconds...";
+        sleep 5;
+    fi;
+
     digits=$(basename "$url" .jpg);
-    curlstats -so /dev/null "$url" > output/${digits}.txt
+
+    echo "[${count}/${num_urls}] curling ${url}...";
+    curlstats -so /dev/null "$url" > output/${digits}.txt;
 done
 
 
