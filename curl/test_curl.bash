@@ -1,5 +1,10 @@
 #!/bin/bash
 
+sleep_amt=1
+urls=(http://i.imgur.com/0{0..9}{0..9}{0..9}{0..9}.jpg);
+num_urls="${#urls[@]}"
+
+
 
 function curlstats () 
 { 
@@ -28,11 +33,6 @@ function curlstats ()
 
 
 
-urls=(http://i.imgur.com/00{a..z}{a..z}{a..z}.jpg);
-
-
-num_urls="${#urls[@]}"
-
 echo "testing ${num_urls} urls..."
 
 
@@ -43,13 +43,13 @@ for url in "${urls[@]}"; do
     remainder=$((count % 50));
 
     if [[ $remainder -eq 0 ]]; then
-        echo "sleeping for five seconds...";
-        sleep 5;
+        echo "sleeping for ${sleep_amt} seconds...";
+        sleep ${sleep_amt};
     fi;
 
     digits=$(basename "$url" .jpg);
 
-    echo "[${count}/${num_urls}] curling ${url}...";
+    echo "[${count}/${num_urls}] curling ${url} ...";
     curlstats -so /dev/null "$url" > output/${digits}.txt;
 done
 
