@@ -19,16 +19,15 @@ class ImgurIterator(object):
         self.name = '%s' % str(name)
 
     def _get_imgur_str(self):
-        return utils.n_to_imgur(num)
+        return n_to_imgur(num)
 
 
     def get_next(self):
 
-        imgur_str = utils.n_to_imgur(self.count)
+        imgur_str = n_to_imgur(self.count)
         url = 'http://i.imgur.com/%s.png' % imgur_str
         resp = requests.head(url)
-        results[self.count] = resp.headers
-
+        self.results[self.count] = resp.headers
         self.count += 1
 
     def set_position(self, pos):
